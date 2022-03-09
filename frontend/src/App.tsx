@@ -1,20 +1,22 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-interface User {
-  name: string;
-  id: number
+import "./styles/global.css";
+
+interface Movie {
+  nome: string;
+  id: number;
+  ano: number;
 }
 
 export default function App() {
-
-  const [users, setUsers] = useState<object[]>([])
+  const [users, setUsers] = useState<object[]>([]);
 
   function api() {
     axios
-      .get("http://localhost:3001/users")
+      .get("http://localhost:3001/movies")
       .then((res) => {
-        setUsers(res.data.data);
+        setUsers(res.data);
       })
       .catch((error) => console.log(error));
   }
@@ -23,9 +25,16 @@ export default function App() {
     api();
   }, []);
 
-  return <div>
-    {users.map((person: User) => {
-      return <li key={person.id}>{person.name}</li>
-    })}
-  </div>;
+  return (
+    <div>
+      {users.map((movie: Movie) => {
+        return (
+          <div className="movie" key={movie.id}>
+            <p>{movie.nome}</p>
+            <p>{movie.ano}</p>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
